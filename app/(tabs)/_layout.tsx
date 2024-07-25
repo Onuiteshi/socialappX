@@ -1,21 +1,26 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
+import React, {useEffect} from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import {getUser} from "@/auth";
+import {useDispatch} from "react-redux";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+    const dispatch = useDispatch<any>();
+
+    useEffect(() => {
+        dispatch(getUser());
+    }, [dispatch]);
+
 
   return (
     <Tabs
+        initialRouteName="(home)"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: "#E91E63",
         headerShown: false,
       }}>
       <Tabs.Screen
-        name="index"
+        name="(home)"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
@@ -24,11 +29,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="(create)"
         options={{
-          title: 'Explore',
+          title: 'Add',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'add-circle' : 'add-circle-outline'} color={color} />
+          ),
+        }}
+      />
+        <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
           ),
         }}
       />
